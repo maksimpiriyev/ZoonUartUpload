@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "serial_port.h"
 
 void swap(uint8_t& a,uint8_t& b){
@@ -19,7 +20,7 @@ int main(int argc,char** argv) {
     FILE* file = fopen(argv[3],"rb");
     union{
         uint8_t bytes[4];
-        int value;
+        uint32_t value;
     }length;
     bool isLittleEndian = true;
     length.value = 1;
