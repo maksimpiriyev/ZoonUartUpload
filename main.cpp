@@ -15,11 +15,6 @@ int main(int argc,char** argv) {
         return 0;
     }
 
-    int baudRate = 115200;
-    baudRate = atoi(argv[2]);
-    SerialPort serial(argv[1], baudRate);
-    serial.connect();
-    FILE* file = fopen(argv[3],"rb");
     union{
         uint8_t bytes[4];
         uint32_t value;
@@ -30,13 +25,23 @@ int main(int argc,char** argv) {
         isLittleEndian = false;
     }
 
+
+    int baudRate = 115200;
+    baudRate = atoi(argv[2]);
+    SerialPort serial(argv[1], baudRate);
+
+    FILE* file = fopen(argv[3],"rb");
+
+
     fseek(file,0L,SEEK_END);
     length.value = ftell(file);
-    if(!isLittleEndian){
+    if(isLittleEndian){
         swap(length.bytes[0],length.bytes[3]);
         swap(length.bytes[1],length.bytes[2]);
     }
     fseek(file,0L,SEEK_SET);
+
+    serial.connect();
     serial.send((uint8_t*)"BOOTLOADX",strlen("BOOTLOADX"));
     sleep(1);
     serial.send(length.bytes,sizeof(length));
