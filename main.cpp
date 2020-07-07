@@ -40,7 +40,7 @@ int main(int argc,char** argv) {
         swap(length.bytes[1],length.bytes[2]);
     }
     fseek(file,0L,SEEK_SET);
-
+    printf("File: %s size %d bytes\n",argv[3],length.value);
     serial.connect();
     serial.send((uint8_t*)"BOOTLOADX",strlen("BOOTLOADX"));
     sleep(1);
