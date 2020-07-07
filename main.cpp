@@ -42,7 +42,7 @@ int main(int argc,char** argv) {
     fseek(file,0L,SEEK_SET);
     printf("File: %s size %d bytes\n",argv[3],length.value);
     serial.connect();
-    serial.send((uint8_t*)"BOOTLOADX",strlen("BOOTLOADX"));
+    serial.send((uint8_t*)"DRONEE-BOOTLOADX",strlen("DRONEE-BOOTLOADX"));
     sleep(1);
     serial.send(length.bytes,sizeof(length));
     uint8_t buffer[1024];
