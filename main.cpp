@@ -18,7 +18,7 @@ int main(int argc,char** argv) {
     SerialPort serial(argv[1], baudRate);
     FILE* file = fopen(argv[3],"rb");
     union{
-        uint_t bytes[4];
+        uint8_t bytes[4];
         int value;
     }length;
     bool isLittleEndian = true;
