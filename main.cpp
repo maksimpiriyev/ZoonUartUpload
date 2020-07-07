@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "serial_port.h"
+#include <string.h>
 
 void swap(uint8_t& a,uint8_t& b){
     uint8_t c = b;
@@ -17,6 +18,7 @@ int main(int argc,char** argv) {
     int baudRate = 115200;
     baudRate = atoi(argv[2]);
     SerialPort serial(argv[1], baudRate);
+    serial.connect();
     FILE* file = fopen(argv[3],"rb");
     union{
         uint8_t bytes[4];
@@ -34,15 +36,16 @@ int main(int argc,char** argv) {
         swap(length.bytes[0],length.bytes[3]);
         swap(length.bytes[1],length.bytes[2]);
     }
-    fseel(file,0L,SEEK_SET);
-    serial.write((uint8_t*)"BOOTLOADX",strlen("BOOTLOADX"));
+    fseek(file,0L,SEEK_SET);
+    serial.send((uint8_t*)"BOOTLOADX",strlen("BOOTLOADX"));
     sleep(1);
-    serial.write(length.bytes,sizeof(length));
+    serial.send(length.bytes,sizeof(length));
     uint8_t buffer[1024];
+    int l = 0;
     while( (l=fread(buffer,1,1024,file)) > 0){
-        serial.write(buffer,l);
+        serial.send(buffer,l);
     }
-    serial.close();
+    serial.disconnect();
 
     return 0;
 }
