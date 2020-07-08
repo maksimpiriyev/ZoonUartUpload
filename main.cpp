@@ -47,8 +47,18 @@ int main(int argc,char** argv) {
     serial.send(length.bytes,sizeof(length));
     uint8_t buffer[1024];
     int l = 0;
-    while( (l=fread(buffer,1,1024,file)) > 0){
-        serial.send(buffer,l);
+    int counter = 0;
+    int writeCount = 0;
+    while( (l=fread(buffer+counter,1,8-counter,file)) > 0){
+        counter += l;
+        if(counter == 8) {
+            serial.send(buffer, counter);
+            counter = 0;
+            int r = serial.receive(buffer,1);
+            if(r){
+                printf("ok:%d\n",writeCount++);
+            }
+        }
     }
     serial.disconnect();
 
