@@ -56,7 +56,7 @@ int main(int argc,char** argv) {
             serial.send(buffer, counter);
             counter = 0;
             int r = serial.receive(buffer,1);
-            if(r){
+            if(r>0){
                 writeCount++;
                 printf("ok:%d %.2f\n",writeCount,100*writeCount*8.0/fileLength);
             }
