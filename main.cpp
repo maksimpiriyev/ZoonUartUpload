@@ -45,7 +45,7 @@ int main(int argc,char** argv) {
     serial.connect();
     serial.send((uint8_t*)"DRONEE-BOOTLOADX",strlen("DRONEE-BOOTLOADX"));
     sleep(1);
-    serial.send(length.bytes,sizeof(length));
+    serial.send(length.bytes,4);
     uint8_t buffer[1024];
     int l = 0;
     int counter = 0;
